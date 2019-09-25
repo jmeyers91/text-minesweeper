@@ -1,0 +1,20 @@
+{
+  "name": "textsweeper",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc",
+    "start": "ts-node src/index.ts"
+  },
+  "bin": "./lib/index.js",
+  "keywords": [],
+  "author": "James Meyers",
+  "license": "ISC",
+  "devDependencies": {
+    "@types/node": "^12.7.7",
+    "ts-node": "^8.4.1",
+    "typescript": "^3.6.3"
+  }
+}
