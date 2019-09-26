@@ -18,36 +18,36 @@ export default class Controls extends EventEmitter {
     process.stdin.off('keypress', this.handleKeyPress);
   }
 
-  handleKeyPress(key: any, event: { ctrl: boolean; name: string }) {
-    if (event.ctrl && event.name === 'c') {
-      this.emit('quit');
+  handleKeyPress(_: any, event: { ctrl: boolean; name: string }) {
+    if (!event) {
       return;
     }
 
-    if (typeof key === 'string') {
-      switch (key.toLowerCase()) {
-        case 'w':
-          this.emit('up');
-          break;
-        case 'a':
-          this.emit('left');
-          break;
-        case 's':
-          this.emit('down');
-          break;
-        case 'd':
-          this.emit('right');
-          break;
-        case 'f':
-          this.emit('flag');
-          break;
-        case ' ':
-          this.emit('open');
-          break;
-        case '\r':
-          this.emit('restart');
-          break;
-      }
+    switch (true) {
+      case event.name === 'w' || event.name === 'up':
+        this.emit('up');
+        break;
+      case event.name === 'a' || event.name === 'left':
+        this.emit('left');
+        break;
+      case event.name === 's' || event.name === 'down':
+        this.emit('down');
+        break;
+      case event.name === 'd' || event.name === 'right':
+        this.emit('right');
+        break;
+      case event.name === 'f':
+        this.emit('flag');
+        break;
+      case event.name === 'space':
+        this.emit('open');
+        break;
+      case event.name === 'return':
+        this.emit('restart');
+        break;
+      case (event.ctrl && event.name === 'c') || event.name === 'q':
+        this.emit('quit');
+        break;
     }
   }
 }

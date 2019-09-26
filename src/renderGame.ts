@@ -2,12 +2,8 @@ import chalk from 'chalk';
 import Minesweeper from './models/Minesweeper';
 import getNeighborMines from './getNeighborMines';
 
-function noColor(s: string): string {
-  return s;
-}
-
 export default function renderGame(game: Minesweeper) {
-  const { cells, playerX, playerY, startTime, options } = game;
+  const { cells, playerX, playerY, startTime } = game;
   const toWrite: string[] = [];
 
   for (const row of cells) {

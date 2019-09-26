@@ -20,7 +20,7 @@ Pass width, height, and mine count as arguments.
 textsweeper 10 20 30
 ```
 
-Use the WASD keys to move, space to reveal cells, and enter to restart.
+Use the arrow keys or WASD to move, space to reveal cells, enter to restart, and Q or ctrl-c to quit.
 
 ## Develop
 
