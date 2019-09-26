@@ -1,6 +1,8 @@
 # Textsweeper
 
-Minimal terminal minesweeper.
+Terminal minesweeper written in Typescript.
+
+![Screenshot](/screenshot.png)
 
 ## Install
 
