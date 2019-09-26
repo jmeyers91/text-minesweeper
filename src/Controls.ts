@@ -38,6 +38,9 @@ export default class Controls extends EventEmitter {
         case 'd':
           this.emit('right');
           break;
+        case 'f':
+          this.emit('flag');
+          break;
         case ' ':
           this.emit('open');
           break;

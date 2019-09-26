@@ -1,5 +1,10 @@
+import chalk from 'chalk';
 import Minesweeper from './models/Minesweeper';
 import getNeighborMines from './getNeighborMines';
+
+function noColor(s: string): string {
+  return s;
+}
 
 export default function renderGame(game: Minesweeper) {
   const { cells, playerX, playerY, startTime, options } = game;
@@ -7,25 +12,28 @@ export default function renderGame(game: Minesweeper) {
 
   for (const row of cells) {
     for (const cell of row) {
-      if (cell.x === playerX && cell.y === playerY) {
-        if (game.dead) {
-          toWrite.push(' X ');
-        } else {
-          toWrite.push(' O ');
-        }
-      } else if (cell.isOpen || game.dead || game.win) {
+      const isPlayer = cell.x === playerX && cell.y === playerY;
+      if (cell.isOpen || game.dead || game.win) {
         if (cell.isMine) {
           toWrite.push(' * ');
         } else {
           const neighborMineCount = getNeighborMines(game, cell).length;
           if (neighborMineCount > 0) {
-            toWrite.push(` ${neighborMineCount} `);
+            const text = ` ${neighborMineCount} `;
+
+            toWrite.push(isPlayer ? chalk.blue.inverse(text) : text);
           } else {
-            toWrite.push('   ');
+            toWrite.push(isPlayer ? chalk.blue.inverse('   ') : '   ');
           }
         }
+      } else if (cell.isFlagged) {
+        toWrite.push(
+          isPlayer ? chalk.blue.inverse(' F ') : chalk.white.inverse(' F ')
+        );
       } else {
-        toWrite.push('\u2587\u2587\u2587');
+        toWrite.push(
+          isPlayer ? chalk.blue.inverse('   ') : chalk.white.inverse('   ')
+        );
       }
     }
     toWrite.push('\n');
@@ -34,14 +42,19 @@ export default function renderGame(game: Minesweeper) {
   if (startTime) {
     const elapsed = (game.endTime || Date.now()) - startTime;
     const seconds = (elapsed / 1000).toFixed(2);
-    toWrite.push('\n' + seconds);
+    const { mineCount } = game.options;
+    const flaggedCount = game.cells.flat().reduce((count, cell) => {
+      if (cell.isFlagged) {
+        return count + 1;
+      }
+      return count;
+    }, 0);
+    toWrite.push(seconds, `      ${flaggedCount} / ${mineCount}`);
   }
 
   if (game.win) {
     toWrite.push(' Win');
-  }
-
-  if (game.dead) {
+  } else if (game.dead) {
     toWrite.push(' Dead');
   }
 

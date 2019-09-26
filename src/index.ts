@@ -6,6 +6,8 @@ import renderGame from './renderGame';
 import movePlayer from './movePlayer';
 import placeMines from './placeMines';
 import openCell from './openCell';
+import flagCell from './flagCell';
+import getCell from './getCell';
 
 const width = (process.argv[2] && parseInt(process.argv[2], 10)) || 30;
 const height = (process.argv[3] && parseInt(process.argv[3], 10)) || 30;
@@ -57,10 +59,20 @@ function startGame() {
 
   controls.on('open', () => {
     const { playerX, playerY } = game;
+    const cell = getCell(game, playerX, playerY);
+    if (!cell || cell.isOpen || cell.isFlagged) {
+      return;
+    }
     if (!game.minesPlaced) {
       game = placeMines(game, playerX, playerY);
     }
     game = openCell(game, playerX, playerY);
+    renderGame(game);
+  });
+
+  controls.on('flag', () => {
+    const { playerX, playerY } = game;
+    game = flagCell(game, playerX, playerY);
     renderGame(game);
   });
 
@@ -72,6 +84,8 @@ function startGame() {
   controls.on('quit', () => process.exit());
 
   renderGame(game);
+
+  setInterval(() => renderGame(game), 500);
 }
 
 startGame();
